@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "company": "Test",
+        "role": "Test",
+        "location": "Test",
+        "date_applied": "2026-06-06",
+        "status": "Rejected",
+        "job_link": "test",
+        "notes": "test"
+    },
+        {
+        "id": 2,
+        "company": "Test",
+        "role": "Test",
+        "location": "Test",
+        "date_applied": "2026-06-06",
+        "status": "Applied",
+        "job_link": "test",
+        "notes": "test"
+    },
+        {
+        "id": 3,
+        "company": "Test",
+        "role": "Test",
+        "location": "Test",
+        "date_applied": "2026-06-06",
+        "status": "Applied",
+        "job_link": "test",
+        "notes": "test"
+    },
+        {
+        "id": 4,
+        "company": "Accenture",
+        "role": "SWE",
+        "location": "Mumbai",
+        "date_applied": "2026-06-06",
+        "status": "Applied",
+        "job_link": "test",
+        "notes": "test"
+    }
+]
