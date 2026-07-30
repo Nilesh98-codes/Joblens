@@ -1,42 +1,153 @@
 [
     {
         "id": 1,
-        "company": "Test",
-        "role": "Test",
-        "location": "Test",
-        "date_applied": "2026-06-06",
-        "status": "Rejected",
-        "job_link": "test",
-        "notes": "test"
+        "company": "Google",
+        "role": "Software Engineer",
+        "location": "Bengaluru, India",
+        "date_applied": "2026-06-18",
+        "status": "Interview",
+        "job_link": "https://careers.google.com/",
+        "notes": "Technical interview scheduled next week."
     },
-        {
+    {
         "id": 2,
-        "company": "Test",
-        "role": "Test",
-        "location": "Test",
-        "date_applied": "2026-06-06",
+        "company": "Microsoft",
+        "role": "Software Engineer",
+        "location": "Hyderabad, India",
+        "date_applied": "2026-06-25",
         "status": "Applied",
-        "job_link": "test",
-        "notes": "test"
+        "job_link": "https://careers.microsoft.com/",
+        "notes": "Applied through careers portal."
     },
-        {
+    {
         "id": 3,
-        "company": "Test",
-        "role": "Test",
-        "location": "Test",
-        "date_applied": "2026-06-06",
-        "status": "Applied",
-        "job_link": "test",
-        "notes": "test"
+        "company": "Amazon",
+        "role": "SDE I",
+        "location": "Bengaluru, India",
+        "date_applied": "2026-07-02",
+        "status": "Online Assessment",
+        "job_link": "https://www.amazon.jobs/",
+        "notes": "OA received via email."
     },
-        {
+    {
         "id": 4,
-        "company": "Accenture",
-        "role": "SWE",
-        "location": "Mumbai",
-        "date_applied": "2026-06-06",
-        "status": "Applied",
-        "job_link": "test",
-        "notes": "test"
-    }
+        "company": "TCS",
+        "role": "Systems Engineer",
+        "location": "Mumbai, India",
+        "date_applied": "2026-07-05",
+        "status": "Rejected",
+        "job_link": "https://www.tcs.com/careers",
+        "notes": "Application not shortlisted."
+    },
+    {
+        "id": 5,
+        "company": "Infosys",
+        "role": "Systems Engineer",
+        "location": "Pune, India",
+        "date_applied": "2026-07-12",
+        "status": "Offer",
+        "job_link": "https://career.infosys.com/",
+        "notes": "Offer received. Waiting to respond."
+    },
+    {
+    "id": 6,
+    "company": "Accenture",
+    "role": "Associate SDE",
+    "location": "Mumbai, India",
+    "date_applied": "2026-07-15",
+    "status": "Applied",
+    "job_link": "https://www.accenture.com/in-en/careers",
+    "notes": "Applied through campus hiring portal."
+},
+{
+    "id": 7,
+    "company": "IBM",
+    "role": "App Developer",
+    "location": "Bengaluru, India",
+    "date_applied": "2026-07-17",
+    "status": "Online Assessment",
+    "job_link": "https://www.ibm.com/careers",
+    "notes": "Assessment scheduled for this weekend."
+},
+{
+    "id": 8,
+    "company": "Deloitte",
+    "role": "Technology Analyst",
+    "location": "Hyderabad, India",
+    "date_applied": "2026-07-18",
+    "status": "Interview",
+    "job_link": "https://careers.deloitte.com/",
+    "notes": "Completed HR interview."
+},
+{
+    "id": 9,
+    "company": "Capgemini",
+    "role": "SWE",
+    "location": "Pune, India",
+    "date_applied": "2026-07-20",
+    "status": "Rejected",
+    "job_link": "https://www.capgemini.com/careers/",
+    "notes": "Did not clear technical round."
+},
+{
+    "id": 10,
+    "company": "Oracle",
+    "role": "Graduate SDE",
+    "location": "Bengaluru, India",
+    "date_applied": "2026-07-22",
+    "status": "Applied",
+    "job_link": "https://careers.oracle.com/",
+    "notes": "Waiting for recruiter response."
+},
+{
+    "id": 11,
+    "company": "Zoho",
+    "role": "Software Developer",
+    "location": "Chennai, India",
+    "date_applied": "2026-07-23",
+    "status": "Interview",
+    "job_link": "https://www.zoho.com/careers/",
+    "notes": "Technical interview completed."
+},
+{
+    "id": 12,
+    "company": "Wipro",
+    "role": "Project Engineer",
+    "location": "Mumbai, India",
+    "date_applied": "2026-07-24",
+    "status": "Offer",
+    "job_link": "https://careers.wipro.com/",
+    "notes": "Offer letter received."
+},
+{
+    "id": 13,
+    "company": "Cognizant",
+    "role": "Analyst Trainee",
+    "location": "Pune, India",
+    "date_applied": "2026-07-25",
+    "status": "Applied",
+    "job_link": "https://careers.cognizant.com/",
+    "notes": "Application submitted successfully."
+},
+{
+    "id": 14,
+    "company": "NVIDIA",
+    "role": "SDE Intern",
+    "location": "Pune, India",
+    "date_applied": "2026-07-26",
+    "status": "Online Assessment",
+    "job_link": "https://www.nvidia.com/en-in/about-nvidia/careers/",
+    "notes": "Assessment link received."
+},
+{
+    "id": 15,
+    "company": "Cisco",
+    "role": "SWE I",
+    "location": "Bengaluru, India",
+    "date_applied": "2026-07-27",
+    "status": "Applied",
+    "job_link": "https://jobs.cisco.com/",
+    "notes": "Application under review."
+}
+
 ]

@@ -1,0 +1,4 @@
+# json and datetime are built in
+pypdf
+matplotlib
+pytest

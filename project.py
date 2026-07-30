@@ -1,5 +1,9 @@
+import os
 import json
 from datetime import datetime
+from pypdf import PdfReader
+from matplotlib import pyplot as plt
+from resume_matcher import resume_matcher
 
 
 STATUSES = [
@@ -103,9 +107,9 @@ def main():
         print("3. Update Status")
         print("4. Delete Application")
         print("5. Search Applications")
-        print("6. Resume Matcher")
-        print("7. Statistics")
-        print("8. Exit")
+        print("6. Statistics")
+        print("7. Resume Matcher")
+        print("8. Exit (Press Q or 8)")
 
         print("\n" + "=" * 60)
 
@@ -123,23 +127,26 @@ def main():
 
         elif option == "4":
             delete_application()
-            pass
+           
         elif option == "5":
             search_application()
-            pass
+            
         elif option == "6":
-            # resume matcher
-            pass
-        elif option == "7":
             show_statistics()
-        elif option == "8":
+
+        elif option == "7":
+            resume_matcher()
+
+        elif option == "8" or option == "q" or option == "Q":
             # just break out of the loop
             break
+
 
 def save_json_file(filename, data):
     with open(filename, "w") as file:
         obj = [item.to_dict() for item in data]
         json.dump(obj, file, indent=4)
+
 
 def load_json_file(filename):
     try:
@@ -188,7 +195,6 @@ def add_application():
         print(f"Error: {e}") 
     
     input("\nPress Enter to return to the main menu...")
-
 
 
 def view_application():
@@ -302,12 +308,11 @@ def delete_application():
             print("Invalid input. Please enter a valid number.")
 
     
-
 def search_application():
     applications = load_json_file("applications.json")
     while True:
 
-        # TODO: make this look better
+        # TODO for the future: make this look better
         menu = """Search By:
         1. By Company
         2. By Role
@@ -371,45 +376,130 @@ def search_application():
 def show_statistics():
     applications = load_json_file("applications.json")
 
-    print("\n" + "=" * 50)
-    print("📊 JOB STATISTICS".center(50))
-    print("=" * 50)
+    print()
+    print("""-----Statistics-----
 
-    total = len(applications)
-    print(f"\n📄 Total Applications : {total}\n")
+1. View Terminal Statistics
 
-    # Build tracking dictionary dynamically
+2. Generate Applications by Status Chart
+
+3. Back""")
+    
+    print()
+    choice = int(input("Enter your choice: "))
+
+    # build tracking dictionary dynamically
     track = {status: 0 for status in STATUSES}
 
-    # Count each status
+    # count each status
     for app in applications:
         if app.status in track:
             track[app.status] += 1
 
-    print("Status Breakdown")
-    print("-" * 50)
+    # FOR THE TERMINAL STATS
+    if 1 <= choice <= 3 and choice == 1:
+        print("\n" + "=" * 50)
+        print("📊 JOB STATISTICS".center(50))
+        print("=" * 50)
 
-    # Prevent division by zero
-    max_count = max(track.values()) if total else 1
+        total = len(applications)
+        print(f"\n📄 Total Applications : {total}\n")
 
-    for status, count in track.items():
-        # Scale bars to a maximum width of 20
-        bar_length = int((count / max_count) * 20) if count else 0
-        bar = "█" * bar_length
 
-        percentage = (count / total * 100) if total else 0
+        print("Application Status")
+        print("-" * 50)
 
-        print(
-            f"{status:<20} "
-            f"{bar:<20} "
-            f"{count:>2} ({percentage:>5.1f}%)"
+        # prevent division by zero
+        max_count = max(track.values()) if total else 1
+
+        for status, count in track.items():
+            # scale bars to a maximum width of 20
+            bar_length = int((count / max_count) * 20) if count else 0
+            bar = "■" * bar_length
+
+            percentage = (count / total * 100) if total else 0
+
+            print(
+                f"{status:<20} "
+                f"{bar:<20} "
+                f"{count:>2} ({percentage:>5.1f}%)"
+            )
+
+        print("=" * 50)
+        input("\nPress Enter to return to the menu...")
+    
+
+    # FOR THE VISUAL CHART
+    elif 1 <= choice <= 3 and choice == 2:
+
+        # remove statuses with 0 applications
+        filtered = {}
+        for status, count in track.items():
+            if count > 0:
+                filtered[status] = count
+
+        statuses = list(filtered.keys())
+        counts = list(filtered.values())
+
+        # consistent colors for each status
+        status_colors = {
+            "Applied": "#42A5F5",             
+            "Online Assessment": "#FFCA28",   
+            "Interview": "#AB47BC",           
+            "Offer": "#66BB6A",               
+            "Rejected": "#EF5350"             
+        }
+
+        # store the colors of each status so that each status bar has its appropiate color
+        colors = []
+        for status in statuses:
+            colors.append(status_colors[status])
+
+        plt.figure(figsize=(7, 5))
+
+        bars = plt.bar(
+            statuses,
+            counts,
+            width=0.25,
+            color=colors,
+            edgecolor="black",
+            linewidth=1
         )
 
-    print("=" * 50)
-    input("\nPress Enter to return to the menu...")
-    
+        plt.title("JobLens - Application Statistics", fontsize=18)
+        plt.xlabel("Application Status", fontsize=12)
+        plt.ylabel("Applications", fontsize=12)
 
-    
+        # light grid
+        plt.grid(axis="y", linestyle="--", alpha=0.25)
+
+        # add some headroom
+        plt.ylim(0, max(counts) + 0.7)
+
+        # display values above bars
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(
+                bar.get_x() + bar.get_width() / 2,
+                height + 0.05,
+                str(int(height)),
+                ha="center",
+                va="bottom",
+                fontsize=11,
+                fontweight="bold"
+            )
+
+        # a bit of slight rotation looks cleaner, neat right?
+        plt.xticks(rotation=10)
+
+        plt.tight_layout()
+
+        os.makedirs("charts", exist_ok=True)
+        plt.savefig("charts/job_statistics.png", dpi=300)
+        plt.show()
+        print("\nChart saved as charts/job_statistics.png")
+
+        
 
 if __name__ == "__main__":
     main()
