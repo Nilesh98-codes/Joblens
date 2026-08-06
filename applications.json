@@ -148,5 +148,15 @@
         "status": "Applied",
         "job_link": "https://jobs.cisco.com/",
         "notes": "Application under review."
+    },
+    {
+        "id": 16,
+        "company": "Wipro",
+        "role": "Tech Support",
+        "location": "Chennai",
+        "date_applied": "2026-07-07",
+        "status": "Online Assessment",
+        "job_link": "wipro.careers.com",
+        "notes": "Let's check this out"
     }
 ]

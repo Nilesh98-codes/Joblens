@@ -4,6 +4,16 @@ from datetime import datetime
 from pypdf import PdfReader
 from matplotlib import pyplot as plt
 from resume_matcher import resume_matcher
+from ui import (
+    console, prompt, wait_for_enter,
+    print_success, print_error, print_warning, print_info,
+    print_welcome, print_main_menu, print_exit,
+    print_app_table, print_app_detail,
+    print_section_header, print_status_select,
+    print_search_menu, print_statistics_menu,
+    print_statistics_dashboard,
+    STATUS_STYLE,
+)
 
 
 STATUSES = [
@@ -16,11 +26,11 @@ STATUSES = [
 
 # for a bit of personality, it looks too bland with just text
 STATUS_ICONS = {
-    "Applied": "📝",
-    "Online Assessment": "💻",
-    "Interview": "💼",
-    "Offer": "🎉",
-    "Rejected": "❌"
+    "Applied": "\U0001f4dd",
+    "Online Assessment": "\U0001f4bb",
+    "Interview": "\U0001f4bc",
+    "Offer": "\U0001f389",
+    "Rejected": "\u274c"
 }
 
 class JobApplication:
@@ -51,7 +61,7 @@ class JobApplication:
     # the comment with = below is to make it easier to see the table, below one is better for modification
     # f"\n========================================\n"
     f"{'-' * 18}\n"
-    f"📄 Application #{self.id}\n"
+    f"\U0001f4c4 Application #{self.id}\n"
     f"Company      : {self.company}\n"
     f"Role         : {self.role}\n"
     f"Location     : {self.location}\n"
@@ -94,26 +104,10 @@ class JobApplication:
 def main():
 
     while True:
-        print()
-        print("=" * 60)
-        print("JobLens".center(60))
-        print("Job Application Tracker".center(60))
-        print("=" * 60)
+        print_welcome()
+        print_main_menu()
 
-        print("\nChoose an option:\n")
-
-        print("1. Add Application")
-        print("2. View Applications")
-        print("3. Update Status")
-        print("4. Delete Application")
-        print("5. Search Applications")
-        print("6. Statistics")
-        print("7. Resume Matcher")
-        print("8. Exit (Press Q or 8)")
-
-        print("\n" + "=" * 60)
-
-        option = input("Enter your choice (1-8): ")
+        option = prompt("Enter your choice (1-8)")
 
 
         # new application
@@ -140,6 +134,7 @@ def main():
 
         elif option == "8" or option == "q" or option == "Q":
             # just break out of the loop
+            print_exit()
             break
 
 
@@ -157,7 +152,7 @@ def load_json_file(filename):
     except FileNotFoundError:
         return []
     except json.JSONDecodeError:
-        print(f"Error: Failed to decode JSON from {filename}.")
+        print_error(f"Failed to decode JSON from {filename}.")
         return []
 
 
@@ -168,14 +163,15 @@ def add_application():
     else:
         next_id = 1
         
-    
-    company = input("Enter company name: ").title().strip()
-    role = input("Enter role: ").title().strip()
-    location = input("Enter location: ").title().strip()
-    date_applied = input("Enter date applied (YYYY-MM-DD): ")
-    status = input("Enter status (Applied, Online Assessment, Interview, Offer, Rejected): ").strip().title()
-    job_link = input("Enter job link: ")
-    notes = input("Enter notes: ").strip()
+    print_section_header("Add Application")
+
+    company = prompt("Enter company name").title().strip()
+    role = prompt("Enter role").title().strip()
+    location = prompt("Enter location").title().strip()
+    date_applied = prompt("Enter date applied (YYYY-MM-DD)")
+    status = prompt("Enter status (Applied, Online Assessment, Interview, Offer, Rejected)").strip().title()
+    job_link = prompt("Enter job link")
+    notes = prompt("Enter notes").strip()
 
     try: 
         application = JobApplication(
@@ -190,186 +186,165 @@ def add_application():
         )
         applications.append(application)
         save_json_file("applications.json", applications)
-        print(f" ✓ Application added successfully!")
+        print_success("Application added successfully!")
 
     except ValueError as e:
-        print(f"Error: {e}") 
+        print_error(str(e))
     
-    input("\nPress Enter to return to the main menu...")
+    wait_for_enter()
 
 
 def view_application():
     applications = load_json_file("applications.json")
     if not applications:
-        print("No applications found")
+        print_warning("No applications found")
         return
     
     # the short list of jobs will show here
-    print("=" * 70)
-    print(f"{'ID':<5}{'Company':<20}{'Role':<20}{'Status':<15}")
-    print("-" * 70)
+    print_section_header("View Applications")
+    print_app_table(applications)
 
-    for app in applications:
-        icon = STATUS_ICONS.get(app.status)
-        print(f"{app.id:<5}{app.company:<20}{app.role:<20}{icon} {app.status}")
-
-    print("=" * 70)
     # Prompt user for detailed view
     try:
-        choose = int(input("Enter application ID to view details: "))
+        choose = int(prompt("Enter application ID to view details"))
     except ValueError:
-        print("\nInvalid input. Please enter a valid numerical ID.")
+        print_error("Invalid input. Please enter a valid numerical ID.")
     else:
-        print()
+        console.print()
         # this will show a detailed window of the application
         matched_app = next((app for app in applications if app.id == choose), None)
         
         if matched_app:
-            print(matched_app)
+            print_app_detail(matched_app)
         else:
-            print("Application not found")
+            print_warning("Application not found")
 
     # Go back to menu
-    input("Press Enter to return to the main menu...")
+    wait_for_enter()
 
 
 def update_status():
     applications = load_json_file("applications.json")
     if not applications:
-            print("No applications found")
+            print_warning("No applications found")
             return
         
     # the short view of job applications
-    print("=" * 70)
-    print(f"{'ID':<5}{'Company':<20}{'Role':<20}{'Status':<15}")
-    print("-" * 70)
-    for app in applications:
-            icon = STATUS_ICONS.get(app.status)
-            print(f"{app.id:<5}{app.company:<20}{app.role:<20}{icon} {app.status}")
-    
-    print("=" * 70)
+    print_section_header("Update Status")
+    print_app_table(applications)
 
-    update = int(input("Enter application ID to update: \n"))
+    update = int(prompt("Enter application ID to update"))
+    found = False
 
     for app in applications:
         icon = STATUS_ICONS.get(app.status)
         if update == app.id:
-            print(f"Current Status: {icon} {app.status}")
+            found = True
+            style = STATUS_STYLE.get(app.status, "white")
+            print_info(f"Current Status: [{style}]{icon} {app.status}[/]")
 
-            print("Select new Status: ")
-
-            # Loop through the list to print them dynamically (1-indexed)
-            for index, status in enumerate(STATUSES, start=1):
-                print(f"{index}. {status}")
+            print_status_select(STATUSES)
 
             try:
-                choice = int(input("Choice: "))
+                choice = int(prompt("Choice"))
 
                 # Validate the user's input
                 if 1 <= choice <= len(STATUSES):
                     selected_status = STATUSES[choice - 1]
                     app.status = selected_status
-                    print(f"Successfully updated status to: {selected_status}")
+                    print_success(f"Successfully updated status to: {selected_status}")
                     save_json_file("applications.json", applications)
                     return 
                 else:
-                    print("Invalid choice. Please enter a number from the list.")
+                    print_error("Invalid choice. Please enter a number from the list.")
             except ValueError:
-                print("Invalid input. Please enter a valid number.")
-            print("Press Enter to return to main menu")
-            input("\nPress Enter to return to the main menu...")
-   
+                print_error("Invalid input. Please enter a valid number.")
+            wait_for_enter()
+            
+    if not found:
+        print_warning("Application not found")
+        wait_for_enter()
+        return
 
 def delete_application():
     applications = load_json_file("applications.json")
     if not applications:
-            print("No applications found")
+            print_warning("No applications found")
             return
         
     # the short view of job applications
-    print("=" * 70)
-    print(f"{'ID':<5}{'Company':<20}{'Role':<20}{'Status':<15}")
-    print("-" * 70)
-    for app in applications:
-            icon = STATUS_ICONS.get(app.status)
-            print(f"{app.id:<5}{app.company:<20}{app.role:<20}{icon} {app.status}")
-    
-    print("=" * 70)
+    print_section_header("Delete Application")
+    print_app_table(applications)
+
     try:
-        delete = int(input("Enter application ID to delete: "))
+        delete = int(prompt("Enter application ID to delete"))
         for app in applications:
             if delete == app.id:
                 applications.remove(app)
                 save_json_file("applications.json", applications)
-                print("✓ Application successfully deleted")
+                print_success("Application successfully deleted")
                 return 
-        print("Application does not exit")       
+        print_warning("Application does not exist")
 
     except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print_error("Invalid input. Please enter a valid number.")
 
     
 def search_application():
     applications = load_json_file("applications.json")
     while True:
 
-        # TODO for the future: make this look better
-        menu = """Search By:
-        1. By Company
-        2. By Role
-        3. By Location
-        4. By Status
-        5. Back"""
+        print_section_header("Search Applications")
+        print_search_menu()
 
-        print(menu)
-        choice = input("Enter choice: ")
+        choice = prompt("Enter choice")
         if choice == "1":
-            print("Search By Company")
+            print_section_header("Search By Company")
 
-            search_company = input("Enter Company: ").lower()
+            search_company = prompt("Enter Company").lower()
             match = False
             for app in applications:
                 if app.company.lower().startswith(search_company):
                     match = True
-                    print(app)
+                    print_app_detail(app)
             if not match:
-                print("Company not found")
+                print_warning("Company not found")
 
         if choice == "2":
-            print("Search by role")
+            print_section_header("Search by Role")
 
-            search_role = input("Enter Role: ").lower()
+            search_role = prompt("Enter Role").lower()
             match = False
             for app in applications:
                 if app.role.lower().startswith(search_role):
                     match = True
-                    print(app)
+                    print_app_detail(app)
             if not match:
-                print("Role not found")
+                print_warning("Role not found")
             
         if choice == "3":
-            print("Search by location")
+            print_section_header("Search by Location")
             
-            search_location = input("Enter Role: ").lower()
+            search_location = prompt("Enter Location").lower()
             match = False
             for app in applications:
-                if app.role.lower().startswith(search_location):
+                if app.location.lower().startswith(search_location):
                     match = True
-                    print(app)
+                    print_app_detail(app)
             if not match:
-                print("Applications in given location not found")
+                print_warning("Applications in given location not found")
 
-        if choice == "3":
-            print("Search by Status")
+        if choice == "4":
+            print_section_header("Search by Status")
             
-            search_status = input("Enter Role: ").lower()
+            search_status = prompt("Enter Status").lower()
             match = False
             for app in applications:
-                if app.role.lower().startswith(search_status):
+                if app.status.lower().startswith(search_status):
                     match = True
-                    print(app)
+                    print_app_detail(app)
             if not match:
-                print("Status not found")
+                print_warning("Status not found")
         if choice == "5":
             break
                 
@@ -377,17 +352,14 @@ def search_application():
 def show_statistics():
     applications = load_json_file("applications.json")
 
-    print()
-    print("""-----Statistics-----
-
-1. View Terminal Statistics
-
-2. Generate Applications by Status Chart
-
-3. Back""")
+    print_section_header("Statistics")
+    print_statistics_menu()
     
-    print()
-    choice = int(input("Enter your choice: "))
+    try:
+        choice = int(prompt("Enter your choice"))
+    except ValueError:
+        print_error("Invalid input. Please enter a valid number.")
+        return
 
     # build tracking dictionary dynamically
     track = {status: 0 for status in STATUSES}
@@ -399,35 +371,9 @@ def show_statistics():
 
     # FOR THE TERMINAL STATS
     if 1 <= choice <= 3 and choice == 1:
-        print("\n" + "=" * 50)
-        print("📊 JOB STATISTICS".center(50))
-        print("=" * 50)
-
         total = len(applications)
-        print(f"\n📄 Total Applications : {total}\n")
-
-
-        print("Application Status")
-        print("-" * 50)
-
-        # prevent division by zero
-        max_count = max(track.values()) if total else 1
-
-        for status, count in track.items():
-            # scale bars to a maximum width of 20
-            bar_length = int((count / max_count) * 20) if count else 0
-            bar = "■" * bar_length
-
-            percentage = (count / total * 100) if total else 0
-
-            print(
-                f"{status:<20} "
-                f"{bar:<20} "
-                f"{count:>2} ({percentage:>5.1f}%)"
-            )
-
-        print("=" * 50)
-        input("\nPress Enter to return to the menu...")
+        print_statistics_dashboard(track, total)
+        wait_for_enter()
     
 
     # FOR THE VISUAL CHART
@@ -498,7 +444,7 @@ def show_statistics():
         os.makedirs("charts", exist_ok=True)
         plt.savefig("charts/job_statistics.png", dpi=300)
         plt.show()
-        print("\nChart saved as charts/job_statistics.png")
+        print_info("Chart saved as charts/job_statistics.png")
 
         
 

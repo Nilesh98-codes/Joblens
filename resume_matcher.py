@@ -1,5 +1,9 @@
 from pypdf import PdfReader
 import json 
+from ui import (
+    prompt, wait_for_enter,
+    print_resume_report, print_section_header,
+)
 
 DISPLAY_NAMES = {
     "sql": "SQL",
@@ -40,45 +44,9 @@ def format_skill(skill):
 
 def display_report(score, matched, missing, jd_skills):
 
-    print("\n" + "=" * 55)
-    print("RESUME MATCH REPORT".center(55))
-    print("=" * 55)
+    print_resume_report(score, matched, missing, jd_skills, format_skill)
 
-    # emojis give a nice touch tbh
-    print(f"\n📊 Match Score : {score:.1f}% ({len(matched)}/{len(jd_skills)} skills matched)\n")
-    if 85 <= score <= 100:
-        print("🟢 Excellent Match")
-    elif 70 <= score <= 84:
-        print("🟡 Good Match  ")
-    elif 50 <= score <= 69:
-        print("🟠 Moderate Match ")
-    elif score < 50:
-        print("🔴 Low Match  ")
-
-
-    print(f"✅ Matched Skills ({len(matched)})")
-    print("-" * 55)
-
-    if matched:
-        for skill in sorted(matched):
-            print(f"✓ {format_skill(skill)}")
-    else:
-        print("No matching skills found.")
-
-    print()
-
-    print(f"❌ Missing Skills ({len(missing)})")
-    print("-" * 55)
-
-    if missing:
-        for skill in sorted(missing):
-            print(f"✗ {format_skill(skill)}")
-    else:
-        print("None! Your resume covers every detected skill.")
-
-    print("\n" + "=" * 55)
-
-    input("Press Enter to return to menu...")
+    wait_for_enter()
 
 
 # having a fixed resume path is good   
@@ -93,7 +61,8 @@ def extract_resume_skills():
 
 
 def get_job_desc():
-    job_desc = input("Paste Job Description: \n")
+    print_section_header("Resume Matcher")
+    job_desc = prompt("Paste Job Description")
     return job_desc
 
 
