@@ -250,6 +250,7 @@ def update_status():
     print("=" * 70)
 
     update = int(input("Enter application ID to update: \n"))
+    found = False
 
     for app in applications:
         icon = STATUS_ICONS.get(app.status)
@@ -276,9 +277,12 @@ def update_status():
                     print("Invalid choice. Please enter a number from the list.")
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
-            print("Press Enter to return to main menu")
             input("\nPress Enter to return to the main menu...")
-   
+            
+    if not found:
+        print("Application not foun d")
+        print("\nPress Enter to return to the main menu...")  
+        return
 
 def delete_application():
     applications = load_json_file("applications.json")
@@ -359,7 +363,7 @@ def search_application():
             if not match:
                 print("Applications in given location not found")
 
-        if choice == "3":
+        if choice == "4":
             print("Search by Status")
             
             search_status = input("Enter Role: ").lower()
@@ -387,7 +391,11 @@ def show_statistics():
 3. Back""")
     
     print()
-    choice = int(input("Enter your choice: "))
+    try:
+        choice = int(input("Enter your choice: "))
+    except ValueError:
+        print("Invalid input. Please enter a valid number.")
+        return
 
     # build tracking dictionary dynamically
     track = {status: 0 for status in STATUSES}
