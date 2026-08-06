@@ -119,6 +119,7 @@ def main():
         # new application
         if option == "1":
             add_application()
+            
         elif option == "2":
             view_application()
 

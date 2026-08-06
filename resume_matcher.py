@@ -85,9 +85,10 @@ def display_report(score, matched, missing, jd_skills):
 def extract_resume_skills():
     reader = PdfReader("resume/NILESH_CHIDAMBARAM_Resume.pdf")
 
-    # Loop through each page and print its content
+    # Loop through each page and accumulate its content
+    resume_text = ""
     for index, page in enumerate(reader.pages):
-        resume_text = page.extract_text()
+        resume_text += page.extract_text()
     return resume_text
 
 
