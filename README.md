@@ -1,6 +1,7 @@
 # JobLens
 
 #### Video Demo: https://youtu.be/Oa-S7ZLmMcs
+<!-- TODO: Re-record demo video to show the updated Rich terminal UI -->
 
 #### Description
 
@@ -80,6 +81,16 @@ Statistics include:
 
 In addition to terminal statistics, JobLens can generate a bar chart using Matplotlib, providing a visual summary of application progress.
 
+### Terminal Interface
+
+The terminal output uses the [Rich](https://github.com/Textualize/rich) library for a cleaner, more readable experience. This is a styling layer only — no new functionality was added. The changes include:
+
+* Bordered panels and tables with a rounded box style, replacing plain text output.
+* Color-coded application statuses: Applied (blue), Online Assessment (cyan), Interview (yellow), Offer (green), Rejected (red).
+* Consistent message styling using ✓ (success), ✗ (error), ⚠ (warning), and ℹ (info) indicators.
+* Styled input prompts with automatic fallback to plain `input()` when stdin is piped (for compatibility with automated testing).
+* UTF-8 output is forced explicitly so that box-drawing characters render correctly on Windows terminals.
+
 ## Project Structure
 
 ```
@@ -87,6 +98,7 @@ project/
 │
 ├── project.py
 ├── resume_matcher.py
+├── ui.py
 ├── test_project.py
 ├── applications.json
 ├── skills.json
@@ -109,6 +121,10 @@ I decided to represent each application as a `JobApplication` object instead of 
 ### Why a Separate Resume Matcher Module?
 
 When I first started building the project, all of the code was inside `project.py`. As I added the resume matching feature, the file became much larger and harder to navigate. I moved the resume matching logic into its own module (`resume_matcher.py`) so that each file had a single responsibility. This separation made the project cleaner, easier to maintain, and easier to test.
+
+### Why a Separate UI Module?
+
+The same reasoning applies to `ui.py`. When I upgraded the terminal output to use Rich, I wanted to keep all rendering code — panels, tables, color definitions, styled prompts — in one place rather than scattering Rich calls throughout `project.py` and `resume_matcher.py`. This way, the main files stay focused on business logic, and the interface can be restyled without touching any data handling or validation code.
 
 ### Why Matplotlib?
 
@@ -134,12 +150,14 @@ Testing the application's core functionality helped ensure that the most importa
 
 * os
 * json
+* sys
 * datetime
 
 ### Third-Party Libraries
 
 * pypdf
 * matplotlib
+* rich (used for terminal rendering)
 * pytest (used for testing)
 
 
@@ -154,6 +172,10 @@ Although JobLens is complete, there are several possible enhancements, namely a 
 * Database support using SQLite.
 * A graphical user interface.
 
+## Recent Fixes
+
+* Search by Location and Search by Status now correctly filter on their respective fields. Previously, both were matching against the role field by mistake.
+
 ## What I Learned
 
 
@@ -162,5 +184,7 @@ This project helped me apply many of the concepts I learned throughout CS50P, in
 One of the biggest challenges was keeping the project organized as it grew. Separating the resume matcher into its own module made the code much cleaner, and I also became more confident writing structured code and choosing better variable and function names.
 
 Building the resume matcher and writing automated tests were the most enjoyable parts of the project because they challenged me to apply concepts beyond simply storing and managing data.
+
+The UI upgrade was a good exercise in separating concerns. I wanted the terminal output to look more polished — partly for readability, partly because I use this tool myself and wanted it to feel nicer — so I constrained myself to presentation-only changes: no logic modifications, no new features, just a cleaner interface. Extracting all rendering into `ui.py` made this much easier than I expected, and reinforced the value of keeping display code separate from business logic.
 
 Overall, this project was a great learning experience. Thank you to the entire CS50 team for creating such an amazing course—it has been an incredible journey!
