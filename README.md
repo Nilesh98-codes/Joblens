@@ -2,6 +2,7 @@
 
 #### Video Demo: https://youtu.be/Oa-S7ZLmMcs
 <!-- TODO: Re-record demo video to show the updated Rich terminal UI -->
+**v2** — Enhanced with a Rich-powered terminal UI after course submission.
 
 #### Description
 
@@ -10,6 +11,21 @@ JobLens is a command-line job application tracker built with Python as my final 
 I created this project because keeping track of my own job applications, interview stages, and job links became difficult. JobLens allows users to store and manage job applications, search existing records, view application statistics, and compare their resume with a job description using a simple resume matcher.
 
 My goal was to build a practical application that combines object-oriented programming, JSON file handling, testing with `pytest`, and modular Python design into a project that I can continue using and improving even after completing CS50P.
+
+
+## Screenshots
+
+![Main menu](screenshots/main-menu.png)
+The main menu and welcome screen.
+
+![View applications](screenshots/view-applications.png)
+Viewing saved applications in a color-coded table.
+
+![Statistics](screenshots/statistics.png)
+Terminal statistics dashboard.
+
+![Resume matcher](screenshots/resume-matcher.png)
+Resume-to-job-description match report.
 
 
 ## Features
@@ -172,9 +188,16 @@ Although JobLens is complete, there are several possible enhancements, namely a 
 * Database support using SQLite.
 * A graphical user interface.
 
-## Recent Fixes
+## Updates
 
-* Search by Location and Search by Status now correctly filter on their respective fields. Previously, both were matching against the role field by mistake.
+**v2** — Upgraded the terminal interface using the Rich library
+(bordered panels, tables, color-coded statuses, styled prompts).
+Presentation only — all original logic, data structures, and menu
+behavior are unchanged. Also fixed two minor bugs found during this
+pass: search by location/status was incorrectly matching on role,
+and the resume matcher only read the last page of multi-page PDFs.
+
+**v1** — Original CS50P submission.
 
 ## What I Learned
 

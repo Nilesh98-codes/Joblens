@@ -12,7 +12,7 @@ from ui import (
     print_section_header, print_status_select,
     print_search_menu, print_statistics_menu,
     print_statistics_dashboard,
-    STATUS_STYLE, STATUS_ICONS as UI_STATUS_ICONS,
+    STATUS_STYLE,
 )
 
 
@@ -239,6 +239,7 @@ def update_status():
     for app in applications:
         icon = STATUS_ICONS.get(app.status)
         if update == app.id:
+            found = True
             style = STATUS_STYLE.get(app.status, "white")
             print_info(f"Current Status: [{style}]{icon} {app.status}[/]")
 
@@ -324,10 +325,10 @@ def search_application():
         if choice == "3":
             print_section_header("Search by Location")
             
-            search_location = prompt("Enter Role").lower()
+            search_location = prompt("Enter Location").lower()
             match = False
             for app in applications:
-                if app.role.lower().startswith(search_location):
+                if app.location.lower().startswith(search_location):
                     match = True
                     print_app_detail(app)
             if not match:
@@ -336,10 +337,10 @@ def search_application():
         if choice == "4":
             print_section_header("Search by Status")
             
-            search_status = prompt("Enter Role").lower()
+            search_status = prompt("Enter Status").lower()
             match = False
             for app in applications:
-                if app.role.lower().startswith(search_status):
+                if app.status.lower().startswith(search_status):
                     match = True
                     print_app_detail(app)
             if not match:
