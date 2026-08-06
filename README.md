@@ -1,6 +1,8 @@
 # JobLens
 
-#### Video Demo: https://youtu.be/Oa-S7ZLmMcs
+
+#### Video Demo: https://youtu.be/Oa-S7ZLmMcs?si=NcJKvpjNyIFh-O6P
+
 
 #### Description
 
