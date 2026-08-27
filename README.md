@@ -1,6 +1,7 @@
 # JobLens
 
 #### Video Demo: https://youtu.be/Oa-S7ZLmMcs?si=NcJKvpjNyIFh-O6P
+The video demo is of v1, check the screenshots for v2.
 
 <!-- TODO: Re-record demo video to show the updated Rich terminal UI -->
 **v2** — Enhanced with a Rich-powered terminal UI after course submission.
