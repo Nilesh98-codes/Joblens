@@ -190,6 +190,7 @@ Although JobLens is complete, there are several possible enhancements, namely a 
 * CSV import/export.
 * Database support using SQLite.
 * A graphical user interface.
+* Maybe an actual application.
 
 ## Updates
 
