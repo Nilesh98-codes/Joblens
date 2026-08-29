@@ -98,7 +98,7 @@ Statistics include:
 
 ### Visualization
 
-In addition to terminal statistics, JobLens can generate a bar chart using Matplotlib, providing a visual summary of application progress.
+In addition to terminal statistics, JobLens can generate a bar chart using Matplotlib, providing a visual summary of application progress. The chart is also saved in the charts folder if you want to view it later, the program will create a new charts folder if it does not already exist when used the Statistics/Generate Applications by Status Chart.
 
 ### Terminal Interface
 
