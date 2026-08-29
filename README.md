@@ -195,8 +195,7 @@ Although JobLens is complete, there are several possible enhancements, namely a 
 
 **v2** — Upgraded the terminal interface using the Rich library
 (bordered panels, tables, color-coded statuses, styled prompts).
-Presentation only — all original logic, data structures, and menu
-behavior are unchanged. Also fixed two minor bugs found during this
+Also fixed two minor bugs found during this
 pass: search by location/status was incorrectly matching on role,
 and the resume matcher only read the last page of multi-page PDFs.
 
