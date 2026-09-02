@@ -139,10 +139,9 @@ def test_save_json_file(tmp_path):
 
     assert file1 == expected
 
+#new tests below
 
 # ─── New tests: JobApplication validation & behavior ───────────────────
-
-
 def test_invalid_status():
     """Constructor rejects a status not in STATUSES (the status-validation branch)."""
     with pytest.raises(ValueError, match="Invalid status"):
@@ -152,7 +151,7 @@ def test_invalid_status():
             role="SWE",
             location="Mumbai",
             date_applied="2026-06-07",
-            status="Hired",           # not in STATUSES
+            status="Hired",           # Hired is not in STATUSES
             job_link="careers.google.com",
             notes="Testing",
         )
@@ -232,9 +231,7 @@ def test_from_dict_to_dict_roundtrip():
     assert roundtripped.to_dict() == app.to_dict()
 
 
-# ─── New tests: JSON persistence ──────────────────────────────────────
-
-
+# ─── New tests: JSON persistence ────────────────────────────────────
 def test_load_json_corrupt_file(tmp_path):
     """load_json_file returns [] when the file contains invalid JSON."""
     bad_file = tmp_path / "bad.json"
@@ -307,9 +304,8 @@ def test_save_overwrites_existing_file(tmp_path):
 
 
 # ─── New tests: resume_matcher pure-logic functions ───────────────────
-
-
 from resume_matcher import extract_skills, calculate_match_score, format_skill
+
 
 
 def test_extract_skills():
@@ -351,4 +347,4 @@ def test_format_skill():
 
     # unknown skill falls back to .title()
     assert format_skill("flask") == "Flask"
-    assert format_skill("docker") == "Docker"
+    assert format_skill("docker") == "Docker"
